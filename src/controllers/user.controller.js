@@ -2,8 +2,14 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.model");
 const { body, validationResult } = require("express-validator");
+
+//Used Validators for Email
+
+//Creating a user
 router.post(
   "/",
+
+  //checking if user is available or not
   body("email").custom(async (value) => {
     const user = await User.findOne({ email: value });
     // console.log(user);
@@ -49,6 +55,7 @@ router.post(
   }
 );
 
+//We dont need patch but applied
 router.patch("/:id", async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -69,6 +76,7 @@ router.patch("/:id", async (req, res) => {
 
 //get by id
 
+//Get one by id
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id).lean().exec();
@@ -82,6 +90,8 @@ router.get("/:id", async (req, res) => {
       .send({ msg: "something went wrong", Error: err.message });
   }
 });
+
+//GET all
 
 router.get("/", async (req, res) => {
   try {

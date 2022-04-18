@@ -2,8 +2,12 @@ const express = require("express");
 const router = express.Router();
 const SeachTerm = require("../models/searchTerm.model");
 
+//Search Key Post
+
 router.post("/", async (req, res) => {
   try {
+
+    //Checking if key is available or not
     const keyCheck = await SeachTerm.findOne({ searchKey: req.body.searchKey })
       .lean()
       .exec();
@@ -13,6 +17,8 @@ router.post("/", async (req, res) => {
         .status(200)
         .send({ msg: "KEY found already", result: keyCheck });
     } else {
+
+      //Else creating the key
       const searchKey = await SeachTerm.create(req.body);
       return res
         .status(201)
@@ -25,6 +31,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+//GET All
 router.get("/", async (req, res) => {
   try {
     const searchKeys = await SeachTerm.find();
